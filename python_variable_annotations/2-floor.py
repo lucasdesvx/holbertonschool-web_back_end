@@ -1,3 +1,5 @@
+ #!/usr/bin/env
+
 import math
 
 def floor(n: float) -> int:
