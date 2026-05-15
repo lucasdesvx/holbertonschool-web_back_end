@@ -1,0 +1,21 @@
+/**
+ * 1-stdin.js
+ * An interactive script that reads from stdin and outputs to stdout.
+ */
+
+// Initial greeting
+process.stdout.write('Welcome to Holberton School, what is your name?\n');
+
+// Listen for the 'readable' event to capture user input
+process.stdin.on('readable', () => {
+  const chunk = process.stdin.read();
+
+  if (chunk !== null) {
+    process.stdout.write(`Your name is: ${chunk}`);
+  }
+});
+
+// Listen for the 'end' event to display a closing message
+process.stdin.on('end', () => {
+  process.stdout.write('This important software is now closing\n');
+});
