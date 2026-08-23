@@ -1,3 +1,8 @@
+#!/usr/bin/env python3
+"""
+Deletion-resilient hypermedia pagination
+"""
+
 import csv
 import math
 from typing import List, Dict, Any
@@ -34,19 +39,22 @@ class Server:
             }
         return self.__indexed_dataset
 
-    def get_hyper_index(self, index: int = None, page_size: int = 10) -> Dict[str, Any]:
-        """Returns a dictionary with deletion-resilient hypermedia pagination details."""
+    def get_hyper_index(
+        self, index: int = None, page_size: int = 10
+    ) -> Dict[str, Any]:
+        """Returns a dictionary with deletion-resilient
+
+        hypermedia pagination details.
+        """
         indexed_data = self.indexed_dataset()
         max_index = len(indexed_data) - 1
 
-        # Verify that index is an integer within a valid range
         assert isinstance(index, int) and 0 <= index <= max_index
 
         data = []
         current_index = index
         collected = 0
 
-        # Collect items up to page_size, skipping missing/deleted indexes
         while collected < page_size and current_index <= max_index:
             if current_index in indexed_data:
                 data.append(indexed_data[current_index])
