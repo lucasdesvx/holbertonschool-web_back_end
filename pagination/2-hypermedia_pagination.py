@@ -1,3 +1,8 @@
+#!/usr/bin/env python3
+"""
+Hypermedia pagination module
+"""
+
 import csv
 import math
 from typing import List, Dict, Any, Union
@@ -33,7 +38,7 @@ class Server:
         """Gets a page from the dataset."""
         assert isinstance(page, int) and page > 0
         assert isinstance(page_size, int) and page_size > 0
-        
+
         start, end = index_range(page, page_size)
         return self.dataset()[start:end]
 
@@ -41,14 +46,12 @@ class Server:
         """Returns a dictionary containing hypermedia pagination details."""
         data = self.get_page(page, page_size)
         total_dataset_length = len(self.dataset())
-        
-        # Calculate total pages using math.ceil
-        total_pages = math.ceil(total_dataset_length / page_size) if page_size > 0 else 0
 
-        # Determine next_page
+        total_pages = math.ceil(
+            total_dataset_length / page_size
+        ) if page_size > 0 else 0
+
         next_page = page + 1 if page < total_pages else None
-
-        # Determine prev_page
         prev_page = page - 1 if page > 1 else None
 
         return {
