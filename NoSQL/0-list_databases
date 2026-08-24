@@ -1,3 +1,2 @@
-#!/usr/bin/env bash
 // List all databases in MongoDB
-mongo --eval "show dbs"
+show dbs
