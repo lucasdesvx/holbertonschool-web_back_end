@@ -1,61 +1,36 @@
 const fs = require('fs');
 
-/**
- * Counts and logs students from a CSV file synchronously.
- * @param {string} path - The path to the CSV database file.
- */
-function countStudents(path) {
+function countStudents(dataPath) {
   try {
-    // Read file synchronously with UTF-8 encoding
-    const data = fs.readFileSync(path, 'utf-8');
-    
-    // Split lines and filter out empty rows
+    const data = fs.readFileSync(dataPath, 'utf8');
     const lines = data.split('\n').filter((line) => line.trim() !== '');
     
-    // If the file only has a header or is completely empty
     if (lines.length <= 1) {
       console.log('Number of students: 0');
       return;
     }
 
-    // Extract the header and the student rows
-    const headers = lines[0].split(',');
-    const studentRows = lines.slice(1);
-
-    // Find the indexes for firstname and field dynamically
-    const firstNameIdx = headers.indexOf('firstname');
-    const fieldIdx = headers.indexOf('field');
-
-    // Object to hold fields grouped by field name: { CS: [...], SWE: [...] }
+    const studentLines = lines.slice(1);
+    const totalStudents = studentLines.length;
     const fields = {};
-    let totalStudents = 0;
 
-    for (const row of studentRows) {
-      const studentData = row.split(',');
-      
-      // Ensure the row has the required columns before parsing
-      if (studentData.length === headers.length) {
-        const firstName = studentData[firstNameIdx].trim();
-        const field = studentData[fieldIdx].trim();
-
+    studentLines.forEach((line) => {
+      const parts = line.split(',');
+      if (parts.length >= 4) {
+        const firstname = parts[0];
+        const field = parts[3];
         if (!fields[field]) {
           fields[field] = [];
         }
-        fields[field].push(firstName);
-        totalStudents += 1;
+        fields[field].push(firstname);
       }
-    }
+    });
 
-    // Log total number of students
     console.log(`Number of students: ${totalStudents}`);
-
-    // Log details for each field
-    for (const [fieldName, firstnameList] of Object.entries(fields)) {
-      console.log(`Number of students in ${fieldName}: ${firstnameList.length}. List: ${firstnameList.join(', ')}`);
+    for (const [field, students] of Object.entries(fields)) {
+      console.log(`Number of students in ${field}: ${students.length}. List: ${students.join(', ')}`);
     }
-
-  } catch (error) {
-    // Throw the required error if the file can't be read
+  } catch (err) {
     throw new Error('Cannot load the database');
   }
 }
