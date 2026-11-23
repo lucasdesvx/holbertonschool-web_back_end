@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+"""Module for calculating the floor of a floating-point number."""
+
 import math
 
 
