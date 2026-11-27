@@ -7,8 +7,8 @@ import time
 async_comprehension = __import__('1-async_comprehension').async_comprehension
 
 
-async def measure_runtime():
-    """Run async_comprehension four times concurrently and return the duration."""
+async def measure_runtime() -> float:
+    """Run four comprehensions concurrently and return elapsed seconds."""
     start = time.perf_counter()
     await asyncio.gather(
         async_comprehension(),
